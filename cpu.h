@@ -21,7 +21,7 @@ const size_t MAX_RAM_SIZE    = 100;
 const size_t MAX_LABEL_COUNT = 10; 
 const size_t LABEL_SIZE      = 10;
 const char   LISTING_FILE[]  = "obj/listing.txt";  
-const int    POISON_ARG      = 31415;
+const size_t POISON_ARG      = 31415;
 char*        POISON_NAME     = "ded32";
 
 enum Commands
@@ -41,7 +41,7 @@ enum Commands
 
 struct Label_t
 {
-    int    adress;
+    int  adress;
     char*  name;
 };
 
@@ -108,24 +108,24 @@ int IsRegister(char* reg);
 
 void CopyInt(char* arr, int* value);
 
-void MakeArg(char* line, int command, AsmCmd_t* asmCmd, int *ip);
+void MakeArg(char* line, int command, AsmCmd_t* asmCmd, size_t *ip);
 
 int CpuCtor(Cpu_t* cpu, FILE* binary);
 
 int CpuDtor(Cpu_t* cpu, FILE* data);
 
-arg_t GetPushArg(int command, int* ip, Cpu_t* cpu);
+arg_t GetPushArg(int command, size_t* ip, Cpu_t* cpu);
 
-arg_t* GetPopArg(int command, int* ip, Cpu_t* cpu);
+arg_t* GetPopArg(int command, size_t* ip, Cpu_t* cpu);
 
 int isInBrackets(char* arg);
 
-int MakeCommonArg(char* line, int command, AsmCmd_t* asmCmd, int* ip);
+int MakeCommonArg(char* line, int command, AsmCmd_t* asmCmd, size_t* ip);
 
-int MakeBracketsArg(char* line, int command, AsmCmd_t* asmCmd, int* ip);
+int MakeBracketsArg(char* line, int command, AsmCmd_t* asmCmd, size_t* ip);
 
-int MakeJumpArg(char* line, AsmCmd_t* asmCmd, int *ip);
+int MakeJumpArg(char* line, AsmCmd_t* asmCmd, size_t *ip);
 
-void LabelAnalyze(char* cmd, AsmCmd_t* asmCmd, int ip);
+void LabelAnalyze(char* cmd, AsmCmd_t* asmCmd, size_t ip);
 
-void GetJumpArg(int* ip, Cpu_t* cpu);
+void GetJumpArg(size_t* ip, Cpu_t* cpu);

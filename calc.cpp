@@ -75,7 +75,7 @@ int RunCalc(Cpu_t* cpu)
 {   
     ASSERT(cpu != NULL);
 
-    int ip = 0;
+    size_t ip = 0;
     
     arg_t num1 = 0;
     arg_t num2 = 0;
@@ -103,7 +103,7 @@ int RunCalc(Cpu_t* cpu)
             case CMD_POP:
             {   
                 ++ip;
-                int* arg = GetPopArg(curCmd, &ip, cpu);
+                arg_t* arg = GetPopArg(curCmd, &ip, cpu);
                 *arg = StackPop(&cpu->stk);
                 break;
             }
@@ -157,7 +157,7 @@ int RunCalc(Cpu_t* cpu)
 #undef CALC_
 } 
 
-arg_t GetPushArg(int command, int* ip, Cpu_t* cpu)
+arg_t GetPushArg(int command, size_t* ip, Cpu_t* cpu)
 {
     ASSERT(ip   != NULL);
     ASSERT(cpu  != NULL);
@@ -213,14 +213,14 @@ arg_t GetPushArg(int command, int* ip, Cpu_t* cpu)
     return arg;
 }
 
-arg_t* GetPopArg(int command, int* ip, Cpu_t* cpu)
+arg_t* GetPopArg(int command, size_t* ip, Cpu_t* cpu)
 {
     ASSERT(ip   != NULL);
     ASSERT(cpu  != NULL);
 
-    int   arg    = NULL; 
-    arg_t value  = 0;
-    int   curReg = 0; 
+    size_t arg    = 0; 
+    arg_t  value  = 0;
+    int    curReg = 0; 
 
     
     if (command & ARG_MEM)
@@ -230,7 +230,7 @@ arg_t* GetPopArg(int command, int* ip, Cpu_t* cpu)
             memcpy(&value, cpu->cmdArr + *ip, sizeof(arg_t));
             *ip += sizeof(arg_t);
             
-            arg += value;
+            arg += (size_t) value;
         }
 
         if (command & ARG_REG)
@@ -271,12 +271,12 @@ arg_t* GetPopArg(int command, int* ip, Cpu_t* cpu)
     return NULL;
 }
 
-void GetJumpArg(int* ip, Cpu_t* cpu)
+void GetJumpArg(size_t* ip, Cpu_t* cpu)
 {
     ASSERT(ip  != NULL);
     ASSERT(cpu != NULL);
     
-    int arg = 0;
+    size_t arg = 0;
     
     memcpy(&arg, cpu->cmdArr + *ip, sizeof(int));
     

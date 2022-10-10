@@ -7,21 +7,17 @@ DEF_CMD(ADD,  2, 0, ...)
 
 DEF_CMD(SUB,  3, 0, ...)
 
-
 DEF_CMD(MUL,  4, 0, ...)
-
 
 DEF_CMD(DIV,  5, 0, ...)
 
+DEF_CMD(OUT,  6, 0, ...)
 
-DEF_CMD(INP,  6, 0, ...)
+DEF_CMD(INP,  7, 0, ...)
 
+DEF_CMD(DUMP, 8, 0, ...)
 
-DEF_CMD(DUMP, 7, 0, ...)
+DEF_CMD(POP,  9, 0, ...)
 
-
-DEF_CMD(POP,  8, 0, ...)
-
-
-DEF_CMD(JMP,  9, 0, ...)
+DEF_CMD(JMP, 10, 0, ...)
 

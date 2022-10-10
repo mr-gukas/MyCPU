@@ -72,7 +72,7 @@ int asmMakeArr(AsmCmd_t* asmCmd)
     ASSERT(asmCmd != NULL);
 
     size_t index = 0;
-    int    ip    = 0;
+    size_t    ip    = 0;
     
     fprintf(asmCmd->listfile, "\n---------------------COMMAND LIST---------------------\n");
 
@@ -204,7 +204,7 @@ int IsRegister(char* reg)
     return -1;
 }
 
-void MakeArg(char* line, int command, AsmCmd_t* asmCmd, int* ip)
+void MakeArg(char* line, int command, AsmCmd_t* asmCmd, size_t* ip)
 {
     ASSERT(line   != NULL);
     ASSERT(asmCmd != NULL);
@@ -257,7 +257,7 @@ int isInBrackets(char* arg)
     return 1;
 }
 
-int MakeCommonArg(char* line, int command, AsmCmd_t* asmCmd, int* ip)
+int MakeCommonArg(char* line, int command, AsmCmd_t* asmCmd, size_t* ip)
 {
     ASSERT(line   != NULL);
     ASSERT(asmCmd != NULL);
@@ -314,7 +314,7 @@ int MakeCommonArg(char* line, int command, AsmCmd_t* asmCmd, int* ip)
     return 0;
 }
 
-int MakeBracketsArg(char* line, int command, AsmCmd_t* asmCmd, int* ip)
+int MakeBracketsArg(char* line, int command, AsmCmd_t* asmCmd, size_t* ip)
 {
     ASSERT(line   != NULL);
     ASSERT(asmCmd != NULL);
@@ -390,7 +390,7 @@ int MakeBracketsArg(char* line, int command, AsmCmd_t* asmCmd, int* ip)
     return 0;
 }
 
-void LabelAnalyze(char* cmd, AsmCmd_t* asmCmd, int ip)
+void LabelAnalyze(char* cmd, AsmCmd_t* asmCmd, size_t ip)
 {
     ASSERT(cmd    != NULL);
     ASSERT(asmCmd != NULL);
@@ -456,7 +456,7 @@ void LabelAnalyze(char* cmd, AsmCmd_t* asmCmd, int ip)
 
 }
 
-int MakeJumpArg(char* line, AsmCmd_t* asmCmd, int *ip)
+int MakeJumpArg(char* line, AsmCmd_t* asmCmd, size_t *ip)
 {
     ASSERT(line   != NULL);
     ASSERT(asmCmd != NULL);
