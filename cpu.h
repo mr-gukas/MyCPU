@@ -8,7 +8,7 @@
 #include <unistd.h>
 
 #define SYNTAX_ERROR(command)                       \
-    fprintf(stderr, "Syntax error: %x\n", #command); \
+    fprintf(stderr, "Syntax error: %02X\n", #command); \
     abort();  
 
 typedef int arg_t;
@@ -79,10 +79,11 @@ struct AsmCmd_t
 
 struct Cpu_t
 {
-    char* cmdArr;
+    char*   cmdArr;
+    size_t  size;
     Stack_t stk;
-    arg_t regs[REGS_COUNT];
-    arg_t RAM[MAX_RAM_SIZE];
+    arg_t   regs[REGS_COUNT];
+    arg_t   RAM[MAX_RAM_SIZE];
 };
 
 #ifdef LOG_MODE
@@ -101,7 +102,7 @@ int FillBin(AsmCmd_t* asmCmd, FILE* binary);
 
 char* ReadBin(char* cmdArr, FILE* binary);
 
-int RunCalc(Cpu_t* cpu);
+int RunCpu(Cpu_t* cpu);
 
 int IsRegister(char* reg);
 

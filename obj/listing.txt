@@ -1,0 +1,57 @@
+
+---------------------COMMAND LIST---------------------
+
+  0          PUSH 1 21 1 
+  5         POP [0] ffffffa9 0 
+  a             INP 7 
+  b         POP RAX 49 1
+ 10          PUSH 1 21 1 
+ 15         POP RBX 49 2
+ 1a          PUSH 1 21 1 
+ 1f         POP RCX 49 3
+ 24              7: 
+ 24        PUSH RCX 41 3
+ 29        PUSH RBX 41 2
+ 2e             ADD 2 
+ 2f        PUSH [0] ffffffa1 0 
+ 34             MUL 4 
+ 35         POP [0] ffffffa9 0 
+ 3a        PUSH RCX 41 3
+ 3f          PUSH 1 21 1 
+ 44             ADD 2 
+ 45         POP RCX 49 3
+ 4a        PUSH RCX 41 3
+ 4f        PUSH RAX 41 1
+ 54          JNE :7 10 24 
+ 59        PUSH [0] ffffffa1 0 
+ 5e             OUT 6 
+ 5f            MEOW 11 
+ 60             HLT 0 
+---------------------COMMAND LIST---------------------
+
+  0          PUSH 1 21 1 
+  5         POP [0] ffffffa9 0 
+  a             INP 7 
+  b         POP RAX 49 1
+ 10          PUSH 1 21 1 
+ 15         POP RBX 49 2
+ 1a          PUSH 1 21 1 
+ 1f         POP RCX 49 3
+ 24              7: 
+ 24        PUSH RCX 41 3
+ 29        PUSH RBX 41 2
+ 2e             ADD 2 
+ 2f        PUSH [0] ffffffa1 0 
+ 34             MUL 4 
+ 35         POP [0] ffffffa9 0 
+ 3a        PUSH RCX 41 3
+ 3f          PUSH 1 21 1 
+ 44             ADD 2 
+ 45         POP RCX 49 3
+ 4a        PUSH RCX 41 3
+ 4f        PUSH RAX 41 1
+ 54          JNE :7 10 24 
+ 59        PUSH [0] ffffffa1 0 
+ 5e             OUT 6 
+ 5f            MEOW 11 
+ 60             HLT 0 

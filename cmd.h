@@ -18,14 +18,14 @@ DEF_CMD(ADD,  2, 0,
     VAR NUM2 = POP;
     VAR NUM1 = POP;
 
-    PUSH(NUM1 + NUM2);
+    PUSH((NUM1 + NUM2));
 })
 
 DEF_CMD(SUB,  3, 0,
 {
     VAR NUM2 = POP;
     VAR NUM1 = POP;
-    PUSH(NUM1 - NUM2);
+    PUSH((NUM1 - NUM2));
 })
 
 DEF_CMD(MUL,  4, 0,
@@ -33,7 +33,7 @@ DEF_CMD(MUL,  4, 0,
     VAR NUM2 = POP;
     VAR NUM1 = POP;
 
-    PUSH(NUM2 * NUM1);
+    PUSH((NUM2 * NUM1));
 })
 
 DEF_CMD(DIV,  5, 0,
@@ -74,12 +74,6 @@ DEF_CMD(POP, 9, 1,
     *ARG = POP;
 })
 
-//DEF_CMD(JMP, 10, 1,
-//{
-//    INDEX_UP;
-//    GET_JMP_ARG;
-//})
-
 DEF_JMP(JMP, 10, || 1 ||)
 
 DEF_JMP(JA,  11,       >)
@@ -93,3 +87,4 @@ DEF_JMP(JBE, 14,       <)
 DEF_JMP(JB,  15,      <=)
 
 DEF_JMP(JNE, 16,      !=)
+

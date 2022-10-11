@@ -275,8 +275,6 @@ Elem_t StackPop(Stack_t* stk)
 #if HASH_GUARD
         stk->stackHash = SetStackHash(stk);
 #endif
-        StackDump(stk);
-        
         return POISON;
     }
     

@@ -19,7 +19,7 @@ int main(int argc, const char* argv[])
     Cpu_t cpu = {};
     CpuCtor(&cpu, data);
 
-    RunCalc(&cpu);
+    RunCpu(&cpu);
 
     CpuDtor(&cpu, data);
 
@@ -46,8 +46,9 @@ int CpuCtor(Cpu_t* cpu, FILE* binary)
         abort();
     }
     
-    cpu->cmdArr = (char*) calloc (1, binInfo.size + sizeof(arg_t) * binInfo.nArgs + 1);
-
+    cpu->size   =  binInfo.size + sizeof(arg_t) * binInfo.nArgs + 1;
+    cpu->cmdArr = (char*) calloc (1, cpu->size);
+    
     if (cpu->cmdArr == NULL)
         return 1;
 
@@ -71,7 +72,7 @@ int CpuDtor(Cpu_t* cpu, FILE* data)
     return 0;
 }
 
-int RunCalc(Cpu_t* cpu)
+int RunCpu(Cpu_t* cpu)
 {   
     ASSERT(cpu != NULL);
 
@@ -99,12 +100,12 @@ int RunCalc(Cpu_t* cpu)
             VAR NUM2 = POP;                        \
             VAR NUM1 = POP;                         \
                                                      \
-            if (NUM1 sign NUM2)                       \
+            if ((NUM1) sign (NUM2))                   \
             {                                          \
                 GET_JMP_ARG;                            \
             }                                            \
             else                                          \
-                ip += sizeof(int);                         \
+                ip += sizeof(int) - 1;                     \
         }                                                   \
         break;                                               \
     }
@@ -142,25 +143,15 @@ arg_t GetPushArg(int command, size_t* ip, Cpu_t* cpu)
         memcpy(&value, cpu->cmdArr + *ip, sizeof(arg_t));
         arg += value;
         
-        ++ipCtrl;
+        *ip += sizeof(arg_t);
     }
 
     if (command & ARG_REG)
     {
-        if (command & ARG_IMMED)
-        {
-            memcpy(&curReg, cpu->cmdArr + *ip + sizeof(arg_t), sizeof(int));
-            arg += cpu->regs[curReg];
-            
-            ++ipCtrl;
-        }
-        else 
-        {
-            memcpy(&curReg, cpu->cmdArr + *ip, sizeof(int));
-            arg += cpu->regs[curReg];
-
-            ++ipCtrl;
-        }
+       memcpy(&curReg, cpu->cmdArr + *ip, sizeof(int));
+       arg += cpu->regs[curReg];
+       
+       *ip += sizeof(int);
     }
 
     if (command & ARG_MEM)
@@ -169,16 +160,18 @@ arg_t GetPushArg(int command, size_t* ip, Cpu_t* cpu)
         {
             SYNTAX_ERROR(command);
         }
+
         else
             arg = cpu->RAM[arg];
     }
-
+    
     if ((command & (ARG_IMMED | ARG_REG | ARG_MEM)) == 0)
     {
+        printf("hehe...\n");
         SYNTAX_ERROR(command);
     }
 
-    *ip += ipCtrl * sizeof(int) - 1;
+    *ip -= 1;
 
     return arg;
 }
@@ -262,6 +255,31 @@ void GetJumpArg(size_t* ip, Cpu_t* cpu)
 void CpuDump(Cpu_t* cpu, size_t ip)
 {
     printf("-----------------------------------CPU DUMP-----------------------------------\n");
+
+    
+    for (size_t index = 0; index < cpu->size; ++index)
+    {   
+        if (index == ip)
+        {
+            printf("[");
+        }
+        
+        printf("(%02X, %02X) ", index, *(cpu->cmdArr + index));
+
+        if (index == ip)
+        {
+            printf("]");
+        }
+
+
+        if (*(cpu->cmdArr + index) == 6)
+            break;
+
+        if (index != 0 && index % 9 == 0)
+            printf("\n");
+    }
+
+    printf("\n");
 
     StackDump(&cpu->stk);
 
