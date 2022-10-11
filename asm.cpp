@@ -72,7 +72,7 @@ int asmMakeArr(AsmCmd_t* asmCmd)
     ASSERT(asmCmd != NULL);
 
     size_t index = 0;
-    size_t    ip    = 0;
+    size_t ip    = 0;
     
     fprintf(asmCmd->listfile, "\n---------------------COMMAND LIST---------------------\n");
 
@@ -84,71 +84,32 @@ int asmMakeArr(AsmCmd_t* asmCmd)
         fprintf(asmCmd->listfile, "\n%3x %15s ",  ip, asmCmd->commands.lines[index].lineStart);
 
         sscanf(asmCmd->commands.lines[index].lineStart, "%s%n", cmd, &nChar);
-    
-        if ((strcasecmp(cmd, "PUSH") == 0))
-        {   
-            MakeArg(asmCmd->commands.lines[index].lineStart + nChar, CMD_PUSH, asmCmd, &ip);
-        }
+   
+#define DEF_CMD(name, num, arg, code)                                                    \
+    if (strcasecmp(cmd, #name) == 0)                                                      \
+    {                                                                                      \
+        if (arg)                                                                            \
+        {                                                                                    \
+            MakeArg(asmCmd->commands.lines[index].lineStart + nChar, CMD_##name, asmCmd, &ip);\
+        }                                                                                      \
+        else                                                                                    \
+        {                                                                                        \
+            *(asmCmd->asmArr + ip++) = CMD_##name;                                                \
+            fprintf(asmCmd->listfile, "%x ", *(asmCmd->asmArr + ip - 1));                          \
+        }                                                                                           \
+    }                                                                                                \
+    else
 
-        else if ((strcasecmp(cmd, "POP") == 0))
-        {
-            MakeArg(asmCmd->commands.lines[index].lineStart + nChar, CMD_POP, asmCmd, &ip);
-        }
+#define DEF_JMP(name, num, sign)                                                         \
+    if (strcasecmp(cmd, #name) == 0)                                                  \
+    {                                                                                      \
+        MakeArg(asmCmd->commands.lines[index].lineStart + nChar, JMP_##name, asmCmd, &ip);  \
+    }                                                                                        \
+    else
 
-        else if ((strcasecmp(cmd, "ADD") == 0))
-        {   
-            *(asmCmd->asmArr + ip++) = CMD_ADD;
-            fprintf(asmCmd->listfile, "%0x ",  *(asmCmd->asmArr + ip - 1));
-        }
-       
-        else if ((strcasecmp(cmd, "SUB") == 0))
-        {   
-            *(asmCmd->asmArr + ip++) = CMD_SUB;
-            fprintf(asmCmd->listfile, "%0x ",  *(asmCmd->asmArr + ip - 1));
-        }
+#include "cmd.h"
 
-        else if ((strcasecmp(cmd, "MUL") == 0))
-        {   
-            *(asmCmd->asmArr + ip++) = CMD_MUL;
-            fprintf(asmCmd->listfile, "%0x ",  *(asmCmd->asmArr + ip - 1));
-        }
-       
-        else if ((strcasecmp(cmd, "DIV") == 0))
-        {   
-            *(asmCmd->asmArr + ip++) = CMD_DIV;
-            fprintf(asmCmd->listfile, "%0x ",  *(asmCmd->asmArr + ip - 1));
-        }
-       
-        else if ((strcasecmp(cmd, "OUT") == 0))
-        {   
-            *(asmCmd->asmArr + ip++) = CMD_OUT;
-            fprintf(asmCmd->listfile, "%0x ",  *(asmCmd->asmArr + ip - 1));
-        }
-       
-        else if ((strcasecmp(cmd, "HLT") == 0))
-        {   
-            *(asmCmd->asmArr + ip++) = CMD_HLT;
-            fprintf(asmCmd->listfile, "%0x ",  *(asmCmd->asmArr + ip - 1));
-        }
-         
-        else if ((strcasecmp(cmd, "INPUT") == 0))
-        {   
-            *(asmCmd->asmArr + ip++) = CMD_INP;
-            fprintf(asmCmd->listfile, "%0x ",  *(asmCmd->asmArr + ip - 1));
-        }
-        
-        else if ((strcasecmp(cmd, "DUMP") == 0))
-        {   
-            *(asmCmd->asmArr + ip++) = CMD_DUMP;
-            fprintf(asmCmd->listfile, "%0x ",  *(asmCmd->asmArr + ip - 1));
-        }
-
-        else if ((strcasecmp(cmd, "JMP") == 0))
-        {
-            MakeArg(asmCmd->commands.lines[index].lineStart + nChar, CMD_JMP, asmCmd, &ip);
-        }
-        
-        else if (strchr(cmd, ':') != NULL)
+        /*else*/ if (strchr(cmd, ':') != NULL)
         {   
             LabelAnalyze(cmd, asmCmd, ip); 
         }
@@ -160,11 +121,11 @@ int asmMakeArr(AsmCmd_t* asmCmd)
                             ">>>Emergency termination of the process...\n", index,  cmd);
             abort();
         }
-
- 
-                
     }
     
+#undef DEF_CMD
+#undef DEF_JMP
+
     return 0;
 }
 
@@ -212,9 +173,9 @@ void MakeArg(char* line, int command, AsmCmd_t* asmCmd, size_t* ip)
     
     int argCtrl = 0; 
 
-    if (command == CMD_JMP)
+    if (command >= JMP_JMP && command <= JMP_JNE)
     {
-        argCtrl = MakeJumpArg(line, asmCmd, ip);
+        argCtrl = MakeJumpArg(line, command, asmCmd, ip);
     }
     
     else
@@ -276,7 +237,8 @@ int MakeCommonArg(char* line, int command, AsmCmd_t* asmCmd, size_t* ip)
 
             fprintf(asmCmd->listfile, "%0x %0x ",  *(asmCmd->asmArr + *ip),  curValue);
         }
-        
+       
+
         else if (sscanf(line, "%s", curReg) == 1  && (intReg = IsRegister(curReg)) != -1)
         {
             *(asmCmd->asmArr + *ip) = command | ARG_REG;
@@ -456,13 +418,13 @@ void LabelAnalyze(char* cmd, AsmCmd_t* asmCmd, size_t ip)
 
 }
 
-int MakeJumpArg(char* line, AsmCmd_t* asmCmd, size_t *ip)
+int MakeJumpArg(char* line, int command, AsmCmd_t* asmCmd, size_t *ip)
 {
     ASSERT(line   != NULL);
     ASSERT(asmCmd != NULL);
     ASSERT(ip     != NULL);
     
-    *(asmCmd->asmArr + *ip) = CMD_JMP;
+    *(asmCmd->asmArr + *ip) = command;
 
     int  curValue                 = 0;
     char curTextLabel[LABEL_SIZE] = {};

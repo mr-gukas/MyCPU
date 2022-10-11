@@ -77,74 +77,42 @@ int RunCalc(Cpu_t* cpu)
 
     size_t ip = 0;
     
-    arg_t num1 = 0;
-    arg_t num2 = 0;
-
-#define CALC_(stk, sign)       \
-    num2 = StackPop(stk);       \
-    num1 = StackPop(stk);        \
-    StackPush(stk, num1 sign num2);
-    
     while (*(cpu->cmdArr + ip))
     {
         int curCmd = *(cpu->cmdArr + ip);
 
+#define DEF_CMD(name, num, arg, code) \
+    case CMD_##name:                   \
+        code                            \
+        break;
+
+#define DEF_JMP(name, num, sign)         \
+    case JMP_##name:                      \
+    {                                      \
+        INDEX_UP;                           \
+        if ((curCmd & ONLY_CMD) == JMP_JMP)  \
+        {                                     \
+            GET_JMP_ARG;                       \
+        }                                       \
+        else                                     \
+        {                                         \
+            VAR NUM2 = POP;                        \
+            VAR NUM1 = POP;                         \
+                                                     \
+            if (NUM1 sign NUM2)                       \
+            {                                          \
+                GET_JMP_ARG;                            \
+            }                                            \
+            else                                          \
+                ip += sizeof(int);                         \
+        }                                                   \
+        break;                                               \
+    }
+
         switch (curCmd & ONLY_CMD)
         {
-            case CMD_PUSH:
-            {   
-                ++ip;
-                int arg = GetPushArg(curCmd, &ip, cpu);
-                StackPush(&cpu->stk, arg);
-                //StackDump(&cpu->stk);
-                break;
-            }
-            
-            case CMD_POP:
-            {   
-                ++ip;
-                arg_t* arg = GetPopArg(curCmd, &ip, cpu);
-                *arg = StackPop(&cpu->stk);
-                break;
-            }
+            #include "cmd.h"
 
-            case CMD_JMP:
-            {
-                ++ip;
-                GetJumpArg(&ip, cpu);
-                break;
-            }
-
-            case CMD_ADD:
-                CALC_(&cpu->stk, +);
-                break;
-            case CMD_SUB:
-                CALC_(&cpu->stk, -);
-                break;
-            case CMD_MUL:
-                CALC_(&cpu->stk, *);
-                break;
-            case CMD_DIV:
-                CALC_(&cpu->stk, /);
-                break;
-            case CMD_OUT:
-                printf("%d\n", StackPop(&cpu->stk));
-                //StackDump(&cpu->stk);
-                break;
-            case CMD_INP:
-            {   
-                arg_t num = 0;
-                if (scanf("%d", &num) != 1)
-                {
-                    fprintf(stderr, ">>>Incorrect input value...Sorry...");
-                    abort();
-                }
-
-                StackPush(&cpu->stk, num);
-                break;
-            }
-            case CMD_HLT:
-                break;
             default:
                 fprintf(stderr, ">>>An unknown operation was encountered: %d\n", *(cpu->cmdArr + ip));
                 abort();
@@ -153,8 +121,10 @@ int RunCalc(Cpu_t* cpu)
         ++ip;
     }
 
+#undef DEF_CMD
+#undef DEF_JMP
+
     return 0;
-#undef CALC_
 } 
 
 arg_t GetPushArg(int command, size_t* ip, Cpu_t* cpu)
@@ -289,8 +259,32 @@ void GetJumpArg(size_t* ip, Cpu_t* cpu)
     *ip = arg - 1;
 }
 
+void CpuDump(Cpu_t* cpu, size_t ip)
+{
+    printf("-----------------------------------CPU DUMP-----------------------------------\n");
 
+    StackDump(&cpu->stk);
 
+    printf("                            REGISTERS:\n");
+    printf("REG:  VALUE:\n");
+
+    for (size_t index = 1; index < REGS_COUNT; ++index)
+    {
+        printf("R%cX %6d\n", 'A' + index - 1, cpu->regs[index]);
+    }
+
+    printf("                            RAM:\n");
+
+    for (size_t index = 0; index < MAX_RAM_SIZE; ++index)
+    {
+        printf("%3d ", cpu->RAM[index]);
+
+        if ((index + 1) % 20 == 0)
+            printf("\n");
+    }
+
+    printf("--------------------------------------------------------------------------------\n");
+}
 
 
 

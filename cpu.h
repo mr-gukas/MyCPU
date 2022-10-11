@@ -24,20 +24,19 @@ const char   LISTING_FILE[]  = "obj/listing.txt";
 const size_t POISON_ARG      = 31415;
 char*        POISON_NAME     = "ded32";
 
+#define DEF_CMD(name, num, arg, code) \
+    CMD_##name = num,
+
+#define DEF_JMP(name, num, sign)      \
+    JMP_##name = num,
+
 enum Commands
 {
-    CMD_HLT  = 0,
-    CMD_PUSH = 1,
-    CMD_ADD  = 2,
-    CMD_SUB  = 3,
-    CMD_MUL  = 4,
-    CMD_DIV  = 5,
-    CMD_OUT  = 6,
-    CMD_INP  = 7,
-    CMD_DUMP = 8,
-    CMD_POP  = 9,
-    CMD_JMP  = 10,
+    #include "cmd.h" 
 };
+
+#undef DEF_CMD
+#undef DEF_JMP
 
 struct Label_t
 {
@@ -124,8 +123,10 @@ int MakeCommonArg(char* line, int command, AsmCmd_t* asmCmd, size_t* ip);
 
 int MakeBracketsArg(char* line, int command, AsmCmd_t* asmCmd, size_t* ip);
 
-int MakeJumpArg(char* line, AsmCmd_t* asmCmd, size_t *ip);
+int MakeJumpArg(char* line, int command, AsmCmd_t* asmCmd, size_t *ip);
 
 void LabelAnalyze(char* cmd, AsmCmd_t* asmCmd, size_t ip);
 
 void GetJumpArg(size_t* ip, Cpu_t* cpu);
+
+void CpuDump(Cpu_t* cpu, size_t ip);
