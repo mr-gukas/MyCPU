@@ -82,9 +82,9 @@ DEF_JMP(JAE, 12,      >=)
 
 DEF_JMP(JE,  13,      ==)
 
-DEF_JMP(JBE, 14,       <)
+DEF_JMP(JBE, 14,      <=)
 
-DEF_JMP(JB,  15,      <=)
+DEF_JMP(JB,  15,       <)
 
 DEF_JMP(JNE, 16,      !=)
 

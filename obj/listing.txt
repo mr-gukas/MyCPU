@@ -5,53 +5,59 @@
   5         POP [0] ffffffa9 0 
   a             INP 7 
   b         POP RAX 49 1
- 10          PUSH 1 21 1 
- 15         POP RBX 49 2
- 1a          PUSH 1 21 1 
- 1f         POP RCX 49 3
- 24              7: 
- 24        PUSH RCX 41 3
- 29        PUSH RBX 41 2
- 2e             ADD 2 
- 2f        PUSH [0] ffffffa1 0 
- 34             MUL 4 
- 35         POP [0] ffffffa9 0 
- 3a        PUSH RCX 41 3
- 3f          PUSH 1 21 1 
- 44             ADD 2 
- 45         POP RCX 49 3
- 4a        PUSH RCX 41 3
- 4f        PUSH RAX 41 1
- 54          JNE :7 10 24 
- 59        PUSH [0] ffffffa1 0 
- 5e             OUT 6 
- 5f            MEOW 11 
- 60             HLT 0 
+ 10        PUSH RAX 41 1
+ 15          PUSH 2 21 2 
+ 1a           JB :8 f 0 
+ 1f          PUSH 1 21 1 
+ 24         POP RBX 49 2
+ 29          PUSH 1 21 1 
+ 2e         POP RCX 49 3
+ 33              7: 
+ 33        PUSH RCX 41 3
+ 38        PUSH RBX 41 2
+ 3d             ADD 2 
+ 3e        PUSH [0] ffffffa1 0 
+ 43             MUL 4 
+ 44         POP [0] ffffffa9 0 
+ 49        PUSH RCX 41 3
+ 4e          PUSH 1 21 1 
+ 53             ADD 2 
+ 54         POP RCX 49 3
+ 59        PUSH RCX 41 3
+ 5e        PUSH RAX 41 1
+ 63          JNE :7 10 33 
+ 68              8: 
+ 68        PUSH [0] ffffffa1 0 
+ 6d             OUT 6 
+ 6e             HLT 0 
 ---------------------COMMAND LIST---------------------
 
   0          PUSH 1 21 1 
   5         POP [0] ffffffa9 0 
   a             INP 7 
   b         POP RAX 49 1
- 10          PUSH 1 21 1 
- 15         POP RBX 49 2
- 1a          PUSH 1 21 1 
- 1f         POP RCX 49 3
- 24              7: 
- 24        PUSH RCX 41 3
- 29        PUSH RBX 41 2
- 2e             ADD 2 
- 2f        PUSH [0] ffffffa1 0 
- 34             MUL 4 
- 35         POP [0] ffffffa9 0 
- 3a        PUSH RCX 41 3
- 3f          PUSH 1 21 1 
- 44             ADD 2 
- 45         POP RCX 49 3
- 4a        PUSH RCX 41 3
- 4f        PUSH RAX 41 1
- 54          JNE :7 10 24 
- 59        PUSH [0] ffffffa1 0 
- 5e             OUT 6 
- 5f            MEOW 11 
- 60             HLT 0 
+ 10        PUSH RAX 41 1
+ 15          PUSH 2 21 2 
+ 1a           JB :8 f 68 
+ 1f          PUSH 1 21 1 
+ 24         POP RBX 49 2
+ 29          PUSH 1 21 1 
+ 2e         POP RCX 49 3
+ 33              7: 
+ 33        PUSH RCX 41 3
+ 38        PUSH RBX 41 2
+ 3d             ADD 2 
+ 3e        PUSH [0] ffffffa1 0 
+ 43             MUL 4 
+ 44         POP [0] ffffffa9 0 
+ 49        PUSH RCX 41 3
+ 4e          PUSH 1 21 1 
+ 53             ADD 2 
+ 54         POP RCX 49 3
+ 59        PUSH RCX 41 3
+ 5e        PUSH RAX 41 1
+ 63          JNE :7 10 33 
+ 68              8: 
+ 68        PUSH [0] ffffffa1 0 
+ 6d             OUT 6 
+ 6e             HLT 0 

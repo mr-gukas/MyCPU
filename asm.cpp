@@ -18,7 +18,6 @@ int main(int argc, const char* argv[])
     asmCtor(&sourceCmd, source);
 
     asmMakeArr(&sourceCmd);
-
     asmMakeArr(&sourceCmd);
 
     FillBin(&sourceCmd, processed);
@@ -443,7 +442,8 @@ int MakeJumpArg(char* line, int command, AsmCmd_t* asmCmd, size_t *ip)
     else
     {   
         if (sscanf(line, " :%d", &curValue) == 1 && curValue >= 0 && curValue <= MAX_LABEL_COUNT)
-        {   
+        {  
+
             if (asmCmd->labels[curValue].adress  == POISON_ARG)
             {   
                 curValue = POISON_ARG;
@@ -471,9 +471,6 @@ int MakeJumpArg(char* line, int command, AsmCmd_t* asmCmd, size_t *ip)
             }
             
         }
-
-        else
-            return 1;
 
     }
 

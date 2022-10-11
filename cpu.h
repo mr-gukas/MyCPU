@@ -21,7 +21,7 @@ const size_t MAX_RAM_SIZE    = 100;
 const size_t MAX_LABEL_COUNT = 10; 
 const size_t LABEL_SIZE      = 10;
 const char   LISTING_FILE[]  = "obj/listing.txt";  
-const size_t POISON_ARG      = 31415;
+const size_t POISON_ARG      = 314;
 char*        POISON_NAME     = "ded32";
 
 #define DEF_CMD(name, num, arg, code) \

@@ -6,6 +6,9 @@ cpu:
 	
 asm: 
 	g++ $(CPPFLAGS) asm.cpp filework/filework.cpp -o obj/asm
+	
+disasm: 
+	g++ $(CPPFLAGS) disasm.cpp -o obj/disasm
 
 MK: 
 	g++ MK.cpp -o cpu.out
