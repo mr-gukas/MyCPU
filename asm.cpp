@@ -152,7 +152,7 @@ int IsRegister(char* reg)
 {
     ASSERT(reg != NULL);
 
-    if (strlen(reg) == 3 && reg[0] == 'R' && reg[2] == 'X' && reg[1] >= 'A' && reg[1] <= 'D')
+    if (strlen(reg) == 3 && reg[0] == 'R' && reg[2] == 'X' && reg[1] >= 'A' && reg[1] <= 'I')
         return reg[1] - 'A' + 1;
 
     else

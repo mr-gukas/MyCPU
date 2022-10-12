@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <math.h>
 
 #define SYNTAX_ERROR(command)                       \
     fprintf(stderr, "Syntax error: %02X\n", #command); \
@@ -16,9 +17,9 @@ typedef int arg_t;
 const size_t STR_MAX_SIZE    = 20;
 const short  BASIC_SIGN      = 'VG';
 const size_t BASIC_VERS      = 1;
-const size_t REGS_COUNT      = 5;
+const size_t REGS_COUNT      = 10;
 const size_t MAX_RAM_SIZE    = 100;
-const size_t MAX_LABEL_COUNT = 10; 
+const size_t MAX_LABEL_COUNT = 20; 
 const size_t LABEL_SIZE      = 10;
 const char   LISTING_FILE[]  = "obj/listing.txt";  
 const size_t POISON_ARG      = 314;

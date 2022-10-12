@@ -1,0 +1,5 @@
+cpu.out
+obj/asm
+obj/disasm
+obj/cpu
+

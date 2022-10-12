@@ -64,7 +64,7 @@ DEF_CMD(INP,  7, 0,
 
 DEF_CMD(DUMP, 8, 0,
 {
-    CpuDump(cpu, ip);
+    DUMP_CPU;
 })
 
 DEF_CMD(POP, 9, 1,
@@ -72,6 +72,35 @@ DEF_CMD(POP, 9, 1,
     INDEX_UP;
     VAR* ARG = GET_POP_ARG;
     *ARG = POP;
+})
+
+DEF_CMD(INF, 17, 0,
+{
+    printf("infinite number of roots\n");
+})
+
+DEF_CMD(NO_SOL, 18, 0,
+{
+    printf("no solutions\n");
+})
+
+DEF_CMD(ROOT_PR, 19, 0,
+{
+    VAR INTEG = POP;
+    VAR FRAC  = POP;
+    
+    printf("%d,%d\n", INTEG, FRAC);
+})
+
+DEF_CMD(SQRT, 20, 0, 
+{
+    VAR ARG = floor(sqrt(POP));
+    PUSH(ARG);
+})
+
+DEF_CMD(MINUS_PR, 21, 0,
+{
+    printf("-");
 })
 
 DEF_JMP(JMP, 10, || 1 ||)
