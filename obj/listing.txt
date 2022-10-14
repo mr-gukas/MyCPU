@@ -1,285 +1,307 @@
 
 ---------------------COMMAND LIST---------------------
 
-  0       PUSH 1000 21 3e8 
-  5        POP REX  49 5
-  a             INP 7 
-  b         POP RAX 49 1
- 10             INP 7 
- 11         POP RBX 49 2
- 16             INP 7 
- 17         POP RCX 49 3
- 1c        PUSH RAX 41 1
- 21          PUSH 0 21 0 
- 26          JNE :1 10 0 
- 2b        PUSH RBX 41 2
- 30          PUSH 0 21 0 
- 35          JNE :2 10 0 
- 3a        PUSH RCX 41 3
- 3f          PUSH 0 21 0 
- 44          JNE :3 10 0 
- 49             INF 11 
- 4a          JMP :7 a 0 
- 4f              3: 
- 4f          NO_SOL 12 
- 50          JMP :7 a 0 
- 55              2: 
- 55        PUSH RCX 41 3
- 5a         PUSH -1 21 ffffffff 
- 5f             MUL 4 
- 60        PUSH REX 41 5
- 65             MUL 4 
- 66        PUSH RBX 41 2
- 6b             DIV 5 
- 6c         POP RFX 49 6
- 71              5: 
- 71        PUSH RFX 41 6
- 76          PUSH 0 21 0 
- 7b           JA :9 b 0 
- 80        MINUS_PR 15 
- 81        PUSH RFX 41 6
- 86         PUSH -1 21 ffffffff 
- 8b             MUL 4 
- 8c         POP RFX 49 6
- 91              9: 
- 91        PUSH RFX 41 6
- 96        PUSH RFX 41 6
- 9b        PUSH REX 41 5
- a0             DIV 5 
- a1         POP [0] ffffffa9 0 
- a6        PUSH [0] ffffffa1 0 
- ab        PUSH REX 41 5
- b0             MUL 4 
- b1             SUB 3 
- b2        PUSH [0] ffffffa1 0 
- b7         ROOT_PR 13 
- b8          JMP :7 a 0 
- bd              1: 
- bd        PUSH RBX 41 2
- c2        PUSH RBX 41 2
- c7             MUL 4 
- c8          PUSH 4 21 4 
- cd        PUSH RAX 41 1
- d2             MUL 4 
- d3        PUSH RCX 41 3
- d8             MUL 4 
- d9             SUB 3 
- da        PUSH REX 41 5
- df        PUSH REX 41 5
- e4             MUL 4 
- e5             MUL 4 
- e6         POP RDX 49 4
- eb        PUSH RDX 41 4
- f0          PUSH 0 21 0 
- f5           JB :3 f 4f 
- fa        PUSH RBX 41 2
- ff         PUSH -1 21 ffffffff 
-104             MUL 4 
-105        PUSH REX 41 5
-10a             MUL 4 
-10b          PUSH 2 21 2 
-110        PUSH RAX 41 1
-115             MUL 4 
-116             DIV 5 
-117         POP RFX 49 6
-11c        PUSH RDX 41 4
-121          PUSH 0 21 0 
-126           JE :5 d 71 
-12b        PUSH RFX 41 6
-130        PUSH RDX 41 4
-135            SQRT 14 
-136          PUSH 2 21 2 
-13b        PUSH RAX 41 1
-140             MUL 4 
-141             DIV 5 
-142         POP RDX 49 4
-147        PUSH RDX 41 4
-14c             ADD 2 
-14d         POP RGX 49 7
-152        PUSH RGX 41 7
-157          PUSH 0 21 0 
-15c          JA :10 b 0 
-161        MINUS_PR 15 
-162        PUSH RGX 41 7
-167         PUSH -1 21 ffffffff 
-16c             MUL 4 
-16d         POP RGX 49 7
-172             10: 
-172        PUSH RGX 41 7
-177        PUSH RGX 41 7
-17c        PUSH REX 41 5
-181             DIV 5 
-182         POP [0] ffffffa9 0 
-187        PUSH [0] ffffffa1 0 
-18c        PUSH REX 41 5
-191             MUL 4 
-192             SUB 3 
-193        PUSH [0] ffffffa1 0 
-198         ROOT_PR 13 
-199        PUSH RFX 41 6
-19e        PUSH RDX 41 4
-1a3             SUB 3 
-1a4         POP RGX 49 7
-1a9        PUSH RGX 41 7
-1ae          PUSH 0 21 0 
-1b3          JA :11 b 0 
-1b8        MINUS_PR 15 
-1b9        PUSH RGX 41 7
-1be         PUSH -1 21 ffffffff 
-1c3             MUL 4 
-1c4         POP RGX 49 7
-1c9             11: 
-1c9        PUSH RGX 41 7
-1ce        PUSH RGX 41 7
-1d3        PUSH REX 41 5
-1d8             DIV 5 
-1d9         POP [0] ffffffa9 0 
-1de        PUSH [0] ffffffa1 0 
-1e3        PUSH REX 41 5
-1e8             MUL 4 
-1e9             SUB 3 
-1ea        PUSH [0] ffffffa1 0 
-1ef         ROOT_PR 13 
-1f0              7: 
+  0       PUSH 1000 0021 03e8 
+  5        POP REX  0049 0005
+  a //точность 3 знака 
+  a                 
+  a             INP 0007 
+  b         POP RAX 0049 0001
+ 10             INP 0007 
+ 11         POP RBX 0049 0002
+ 16             INP 0007 
+ 17         POP RCX 0049 0003
+ 1c                 
+ 1c        PUSH RAX 0041 0001
+ 21          PUSH 0 0021 0000 
+ 26          JNE :7 0010 0000 
+ 2b        PUSH RBX 0041 0002
+ 30          PUSH 0 0021 0000 
+ 35          JNE :8 0010 0000 
+ 3a        PUSH RCX 0041 0003
+ 3f          PUSH 0 0021 0000 
+ 44          JNE :9 0010 0000 
+ 49             INF 0011 
+ 4a          JMP :0 000a 0000 
+ 4f                 
+ 4f              9: 
+ 4f          NO_SOL 0012 
+ 50          JMP :0 000a 0000 
+ 55                 
+ 55              8: 
+ 55        PUSH RCX 0041 0003
+ 5a         PUSH -1 0021 ffffffff 
+ 5f             MUL 0004 
+ 60        PUSH REX 0041 0005
+ 65             MUL 0004 
+ 66        PUSH RBX 0041 0002
+ 6b             DIV 0005 
+ 6c         POP RFX 0049 0006
+ 71                 
+ 71 //расчет для одного корня 
+ 71              6: 
+ 71        PUSH RFX 0041 0006
+ 76          PUSH 0 0021 0000 
+ 7b           JA :1 000b 0000 
+ 80        MINUS_PR 0015 
+ 81        PUSH RFX 0041 0006
+ 86         PUSH -1 0021 ffffffff 
+ 8b             MUL 0004 
+ 8c         POP RFX 0049 0006
+ 91              1: 
+ 91        PUSH RFX 0041 0006
+ 96        PUSH RFX 0041 0006
+ 9b        PUSH REX 0041 0005
+ a0             DIV 0005 
+ a1         POP [0] ffffffa9 0000 
+ a6        PUSH [0] ffffffa1 0000 
+ ab        PUSH REX 0041 0005
+ b0             MUL 0004 
+ b1             SUB 0003 
+ b2        PUSH [0] ffffffa1 0000 
+ b7         ROOT_PR 0013 
+ b8          JMP :0 000a 0000 
+ bd                 
+ bd              7: 
+ bd        PUSH RBX 0041 0002
+ c2        PUSH RBX 0041 0002
+ c7             MUL 0004 
+ c8          PUSH 4 0021 0004 
+ cd        PUSH RAX 0041 0001
+ d2             MUL 0004 
+ d3        PUSH RCX 0041 0003
+ d8             MUL 0004 
+ d9             SUB 0003 
+ da        PUSH REX 0041 0005
+ df        PUSH REX 0041 0005
+ e4             MUL 0004 
+ e5             MUL 0004 
+ e6         POP RDX 0049 0004
+ eb        PUSH RDX 0041 0004
+ f0          PUSH 0 0021 0000 
+ f5           JB :9 000f 004f 
+ fa                 
+ fa        PUSH RBX 0041 0002
+ ff         PUSH -1 0021 ffffffff 
+104             MUL 0004 
+105        PUSH REX 0041 0005
+10a             MUL 0004 
+10b          PUSH 2 0021 0002 
+110        PUSH RAX 0041 0001
+115             MUL 0004 
+116             DIV 0005 
+117         POP RFX 0049 0006
+11c        PUSH RDX 0041 0004
+121          PUSH 0 0021 0000 
+126           JE :6 000d 0071 
+12b                 
+12b        PUSH RFX 0041 0006
+130        PUSH RDX 0041 0004
+135            SQRT 0014 
+136          PUSH 2 0021 0002 
+13b        PUSH RAX 0041 0001
+140             MUL 0004 
+141             DIV 0005 
+142         POP RDX 0049 0004
+147        PUSH RDX 0041 0004
+14c             ADD 0002 
+14d         POP RGX 0049 0007
+152        PUSH RGX 0041 0007
+157          PUSH 0 0021 0000 
+15c           JA :2 000b 0000 
+161        MINUS_PR 0015 
+162        PUSH RGX 0041 0007
+167         PUSH -1 0021 ffffffff 
+16c             MUL 0004 
+16d         POP RGX 0049 0007
+172              2: 
+172        PUSH RGX 0041 0007
+177        PUSH RGX 0041 0007
+17c        PUSH REX 0041 0005
+181             DIV 0005 
+182         POP [0] ffffffa9 0000 
+187        PUSH [0] ffffffa1 0000 
+18c        PUSH REX 0041 0005
+191             MUL 0004 
+192             SUB 0003 
+193        PUSH [0] ffffffa1 0000 
+198         ROOT_PR 0013 
+199        PUSH RFX 0041 0006
+19e        PUSH RDX 0041 0004
+1a3             SUB 0003 
+1a4         POP RGX 0049 0007
+1a9        PUSH RGX 0041 0007
+1ae          PUSH 0 0021 0000 
+1b3           JA :3 000b 0000 
+1b8        MINUS_PR 0015 
+1b9        PUSH RGX 0041 0007
+1be         PUSH -1 0021 ffffffff 
+1c3             MUL 0004 
+1c4         POP RGX 0049 0007
+1c9              3: 
+1c9        PUSH RGX 0041 0007
+1ce        PUSH RGX 0041 0007
+1d3        PUSH REX 0041 0005
+1d8             DIV 0005 
+1d9         POP [0] ffffffa9 0000 
+1de        PUSH [0] ffffffa1 0000 
+1e3        PUSH REX 0041 0005
+1e8             MUL 0004 
+1e9             SUB 0003 
+1ea        PUSH [0] ffffffa1 0000 
+1ef         ROOT_PR 0013 
+1f0              0: 
+1f0             HLT 0000 
 ---------------------COMMAND LIST---------------------
 
-  0       PUSH 1000 21 3e8 
-  5        POP REX  49 5
-  a             INP 7 
-  b         POP RAX 49 1
- 10             INP 7 
- 11         POP RBX 49 2
- 16             INP 7 
- 17         POP RCX 49 3
- 1c        PUSH RAX 41 1
- 21          PUSH 0 21 0 
- 26          JNE :1 10 bd 
- 2b        PUSH RBX 41 2
- 30          PUSH 0 21 0 
- 35          JNE :2 10 55 
- 3a        PUSH RCX 41 3
- 3f          PUSH 0 21 0 
- 44          JNE :3 10 4f 
- 49             INF 11 
- 4a          JMP :7 a 1f0 
- 4f              3: 
- 4f          NO_SOL 12 
- 50          JMP :7 a 1f0 
- 55              2: 
- 55        PUSH RCX 41 3
- 5a         PUSH -1 21 ffffffff 
- 5f             MUL 4 
- 60        PUSH REX 41 5
- 65             MUL 4 
- 66        PUSH RBX 41 2
- 6b             DIV 5 
- 6c         POP RFX 49 6
- 71              5: 
- 71        PUSH RFX 41 6
- 76          PUSH 0 21 0 
- 7b           JA :9 b 91 
- 80        MINUS_PR 15 
- 81        PUSH RFX 41 6
- 86         PUSH -1 21 ffffffff 
- 8b             MUL 4 
- 8c         POP RFX 49 6
- 91              9: 
- 91        PUSH RFX 41 6
- 96        PUSH RFX 41 6
- 9b        PUSH REX 41 5
- a0             DIV 5 
- a1         POP [0] ffffffa9 0 
- a6        PUSH [0] ffffffa1 0 
- ab        PUSH REX 41 5
- b0             MUL 4 
- b1             SUB 3 
- b2        PUSH [0] ffffffa1 0 
- b7         ROOT_PR 13 
- b8          JMP :7 a 1f0 
- bd              1: 
- bd        PUSH RBX 41 2
- c2        PUSH RBX 41 2
- c7             MUL 4 
- c8          PUSH 4 21 4 
- cd        PUSH RAX 41 1
- d2             MUL 4 
- d3        PUSH RCX 41 3
- d8             MUL 4 
- d9             SUB 3 
- da        PUSH REX 41 5
- df        PUSH REX 41 5
- e4             MUL 4 
- e5             MUL 4 
- e6         POP RDX 49 4
- eb        PUSH RDX 41 4
- f0          PUSH 0 21 0 
- f5           JB :3 f 4f 
- fa        PUSH RBX 41 2
- ff         PUSH -1 21 ffffffff 
-104             MUL 4 
-105        PUSH REX 41 5
-10a             MUL 4 
-10b          PUSH 2 21 2 
-110        PUSH RAX 41 1
-115             MUL 4 
-116             DIV 5 
-117         POP RFX 49 6
-11c        PUSH RDX 41 4
-121          PUSH 0 21 0 
-126           JE :5 d 71 
-12b        PUSH RFX 41 6
-130        PUSH RDX 41 4
-135            SQRT 14 
-136          PUSH 2 21 2 
-13b        PUSH RAX 41 1
-140             MUL 4 
-141             DIV 5 
-142         POP RDX 49 4
-147        PUSH RDX 41 4
-14c             ADD 2 
-14d         POP RGX 49 7
-152        PUSH RGX 41 7
-157          PUSH 0 21 0 
-15c          JA :10 b 172 
-161        MINUS_PR 15 
-162        PUSH RGX 41 7
-167         PUSH -1 21 ffffffff 
-16c             MUL 4 
-16d         POP RGX 49 7
-172             10: 
-172        PUSH RGX 41 7
-177        PUSH RGX 41 7
-17c        PUSH REX 41 5
-181             DIV 5 
-182         POP [0] ffffffa9 0 
-187        PUSH [0] ffffffa1 0 
-18c        PUSH REX 41 5
-191             MUL 4 
-192             SUB 3 
-193        PUSH [0] ffffffa1 0 
-198         ROOT_PR 13 
-199        PUSH RFX 41 6
-19e        PUSH RDX 41 4
-1a3             SUB 3 
-1a4         POP RGX 49 7
-1a9        PUSH RGX 41 7
-1ae          PUSH 0 21 0 
-1b3          JA :11 b 1c9 
-1b8        MINUS_PR 15 
-1b9        PUSH RGX 41 7
-1be         PUSH -1 21 ffffffff 
-1c3             MUL 4 
-1c4         POP RGX 49 7
-1c9             11: 
-1c9        PUSH RGX 41 7
-1ce        PUSH RGX 41 7
-1d3        PUSH REX 41 5
-1d8             DIV 5 
-1d9         POP [0] ffffffa9 0 
-1de        PUSH [0] ffffffa1 0 
-1e3        PUSH REX 41 5
-1e8             MUL 4 
-1e9             SUB 3 
-1ea        PUSH [0] ffffffa1 0 
-1ef         ROOT_PR 13 
-1f0              7: 
+  0       PUSH 1000 0021 03e8 
+  5        POP REX  0049 0005
+  a //точность 3 знака 
+  a                 
+  a             INP 0007 
+  b         POP RAX 0049 0001
+ 10             INP 0007 
+ 11         POP RBX 0049 0002
+ 16             INP 0007 
+ 17         POP RCX 0049 0003
+ 1c                 
+ 1c        PUSH RAX 0041 0001
+ 21          PUSH 0 0021 0000 
+ 26          JNE :7 0010 00bd 
+ 2b        PUSH RBX 0041 0002
+ 30          PUSH 0 0021 0000 
+ 35          JNE :8 0010 0055 
+ 3a        PUSH RCX 0041 0003
+ 3f          PUSH 0 0021 0000 
+ 44          JNE :9 0010 004f 
+ 49             INF 0011 
+ 4a          JMP :0 000a 01f0 
+ 4f                 
+ 4f              9: 
+ 4f          NO_SOL 0012 
+ 50          JMP :0 000a 01f0 
+ 55                 
+ 55              8: 
+ 55        PUSH RCX 0041 0003
+ 5a         PUSH -1 0021 ffffffff 
+ 5f             MUL 0004 
+ 60        PUSH REX 0041 0005
+ 65             MUL 0004 
+ 66        PUSH RBX 0041 0002
+ 6b             DIV 0005 
+ 6c         POP RFX 0049 0006
+ 71                 
+ 71 //расчет для одного корня 
+ 71              6: 
+ 71        PUSH RFX 0041 0006
+ 76          PUSH 0 0021 0000 
+ 7b           JA :1 000b 0091 
+ 80        MINUS_PR 0015 
+ 81        PUSH RFX 0041 0006
+ 86         PUSH -1 0021 ffffffff 
+ 8b             MUL 0004 
+ 8c         POP RFX 0049 0006
+ 91              1: 
+ 91        PUSH RFX 0041 0006
+ 96        PUSH RFX 0041 0006
+ 9b        PUSH REX 0041 0005
+ a0             DIV 0005 
+ a1         POP [0] ffffffa9 0000 
+ a6        PUSH [0] ffffffa1 0000 
+ ab        PUSH REX 0041 0005
+ b0             MUL 0004 
+ b1             SUB 0003 
+ b2        PUSH [0] ffffffa1 0000 
+ b7         ROOT_PR 0013 
+ b8          JMP :0 000a 01f0 
+ bd                 
+ bd              7: 
+ bd        PUSH RBX 0041 0002
+ c2        PUSH RBX 0041 0002
+ c7             MUL 0004 
+ c8          PUSH 4 0021 0004 
+ cd        PUSH RAX 0041 0001
+ d2             MUL 0004 
+ d3        PUSH RCX 0041 0003
+ d8             MUL 0004 
+ d9             SUB 0003 
+ da        PUSH REX 0041 0005
+ df        PUSH REX 0041 0005
+ e4             MUL 0004 
+ e5             MUL 0004 
+ e6         POP RDX 0049 0004
+ eb        PUSH RDX 0041 0004
+ f0          PUSH 0 0021 0000 
+ f5           JB :9 000f 004f 
+ fa                 
+ fa        PUSH RBX 0041 0002
+ ff         PUSH -1 0021 ffffffff 
+104             MUL 0004 
+105        PUSH REX 0041 0005
+10a             MUL 0004 
+10b          PUSH 2 0021 0002 
+110        PUSH RAX 0041 0001
+115             MUL 0004 
+116             DIV 0005 
+117         POP RFX 0049 0006
+11c        PUSH RDX 0041 0004
+121          PUSH 0 0021 0000 
+126           JE :6 000d 0071 
+12b                 
+12b        PUSH RFX 0041 0006
+130        PUSH RDX 0041 0004
+135            SQRT 0014 
+136          PUSH 2 0021 0002 
+13b        PUSH RAX 0041 0001
+140             MUL 0004 
+141             DIV 0005 
+142         POP RDX 0049 0004
+147        PUSH RDX 0041 0004
+14c             ADD 0002 
+14d         POP RGX 0049 0007
+152        PUSH RGX 0041 0007
+157          PUSH 0 0021 0000 
+15c           JA :2 000b 0172 
+161        MINUS_PR 0015 
+162        PUSH RGX 0041 0007
+167         PUSH -1 0021 ffffffff 
+16c             MUL 0004 
+16d         POP RGX 0049 0007
+172              2: 
+172        PUSH RGX 0041 0007
+177        PUSH RGX 0041 0007
+17c        PUSH REX 0041 0005
+181             DIV 0005 
+182         POP [0] ffffffa9 0000 
+187        PUSH [0] ffffffa1 0000 
+18c        PUSH REX 0041 0005
+191             MUL 0004 
+192             SUB 0003 
+193        PUSH [0] ffffffa1 0000 
+198         ROOT_PR 0013 
+199        PUSH RFX 0041 0006
+19e        PUSH RDX 0041 0004
+1a3             SUB 0003 
+1a4         POP RGX 0049 0007
+1a9        PUSH RGX 0041 0007
+1ae          PUSH 0 0021 0000 
+1b3           JA :3 000b 01c9 
+1b8        MINUS_PR 0015 
+1b9        PUSH RGX 0041 0007
+1be         PUSH -1 0021 ffffffff 
+1c3             MUL 0004 
+1c4         POP RGX 0049 0007
+1c9              3: 
+1c9        PUSH RGX 0041 0007
+1ce        PUSH RGX 0041 0007
+1d3        PUSH REX 0041 0005
+1d8             DIV 0005 
+1d9         POP [0] ffffffa9 0000 
+1de        PUSH [0] ffffffa1 0000 
+1e3        PUSH REX 0041 0005
+1e8             MUL 0004 
+1e9             SUB 0003 
+1ea        PUSH [0] ffffffa1 0000 
+1ef         ROOT_PR 0013 
+1f0              0: 
+1f0             HLT 0000 
