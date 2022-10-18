@@ -19,11 +19,11 @@ PUSH RCX
 PUSH 0
 JNE :9
 INF
-JMP :0
+JMP :5
 
 9:
 NO_SOL
-JMP :0
+JMP :5
 
 8:
 PUSH RCX
@@ -57,7 +57,7 @@ MUL
 SUB
 PUSH [0]
 ROOT_PR
-JMP :0
+JMP :5
 
 7:
 PUSH RBX
@@ -147,6 +147,6 @@ MUL
 SUB
 PUSH [0]
 ROOT_PR
-0:
+5:
 HLT
 

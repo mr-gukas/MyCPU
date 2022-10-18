@@ -2,26 +2,24 @@
 
 int main(int argc, const char* argv[])
 {   
-
     if (argc != 2)
     {
         fprintf(stderr, ">>>Incorrect command line arguments. Exiting the program....\n");
+        abort();
     }   
 
-    FILE* data = NULL;
-    
-    if ((data = fopen(argv[1], "r")) == NULL)
+    FILE* binary = NULL;
+    if ((binary = fopen(argv[1], "r")) == NULL)
     {
         fprintf(stderr, ">>>Incorrect filename: %s\n", argv[1]);
         abort();
     }
     
     Cpu_t cpu = {};
-    CpuCtor(&cpu, data);
 
-    RunCpu(&cpu);
-
-    CpuDtor(&cpu, data);
+    $$(CpuCtor(&cpu, binary));
+    $$(RunCpu(&cpu));
+    $$(CpuDtor(&cpu, binary));
 
 #ifdef LOG_MODE
     endLog(PrintFile);
@@ -34,7 +32,8 @@ int CpuCtor(Cpu_t* cpu, FILE* binary)
 {
     ASSERT(cpu != NULL);
     
-    StackCtor(&cpu->stk, 0);
+    StackCtor(&cpu->stk,    0);
+    StackCtor(&cpu->retStk, 0);
     
     CmdInfo_t binInfo = {};
 
@@ -42,32 +41,31 @@ int CpuCtor(Cpu_t* cpu, FILE* binary)
     
     if (binInfo.sign != BASIC_SIGN || binInfo.vers != BASIC_VERS)
     {
-        fprintf(stderr, ">>>The file extension is incorrect. Exiting the program...\n");
-        abort();
+        return 1;
     }
     
-    cpu->size   =  binInfo.size + sizeof(arg_t) * binInfo.nArgs + 1;
-    cpu->cmdArr = (char*) calloc (1, cpu->size);
+    cpu->size   =  binInfo.filesize;
+    cpu->cmdArr = (unsigned char*) calloc (1, cpu->size + 2);
     
     if (cpu->cmdArr == NULL)
         return 1;
 
-    fread(cpu->cmdArr, sizeof(char), binInfo.size + sizeof(arg_t) * binInfo.nArgs, binary);
+    fread(cpu->cmdArr, sizeof(char), binInfo.filesize + 1, binary);
 
     return 0;
-
 }
 
-int CpuDtor(Cpu_t* cpu, FILE* data)
+int CpuDtor(Cpu_t* cpu, FILE* binary)
 {
     ASSERT(cpu  != NULL);
     ASSERT(data != NULL);
 
     StackDtor(&cpu->stk);
+    StackDtor(&cpu->retStk);
     free     (cpu->cmdArr);
-    fclose   (data);
+    fclose   (binary);
 
-    data = nullptr;
+    binary = nullptr;
 
     return 0;
 }
@@ -78,7 +76,7 @@ int RunCpu(Cpu_t* cpu)
 
     size_t ip = 0;
     
-    while (*(cpu->cmdArr + ip))
+    while (ip <= cpu->size)
     {
         int curCmd = *(cpu->cmdArr + ip);
 
@@ -93,21 +91,26 @@ int RunCpu(Cpu_t* cpu)
         INDEX_UP;                           \
         if ((curCmd & ONLY_CMD) == JMP_JMP)  \
         {                                     \
-            GET_JMP_ARG;                       \
+            $$(GET_JMP_ARG);                   \
         }                                       \
-        else                                     \
+        else if ((curCmd & ONLY_CMD) == JMP_CALL)\
         {                                         \
-            VAR NUM2 = POP;                        \
-            VAR NUM1 = POP;                         \
-                                                     \
-            if ((NUM1) sign (NUM2))                   \
-            {                                          \
-                GET_JMP_ARG;                            \
-            }                                            \
-            else                                          \
-                ip += sizeof(int) - 1;                     \
-        }                                                   \
-        break;                                               \
+            PUSH_RET((ip + sizeof(arg_t) - 1));    \
+            $$(GET_JMP_ARG);                        \
+        }                                             \
+        else                                           \
+        {                                               \
+            VAR NUM2 = POP;                              \
+            VAR NUM1 = POP;                               \
+                                                           \
+            if ((NUM1) sign (NUM2))                         \
+            {                                                \
+                $$(GET_JMP_ARG);                              \
+            }                                                  \
+            else                                                \
+                ip += sizeof(arg_t) - 1;                         \
+        }                                                         \
+        break;                                                     \
     }
 
         switch (curCmd & ONLY_CMD)
@@ -115,8 +118,7 @@ int RunCpu(Cpu_t* cpu)
             #include "cmd.h"
 
             default:
-                fprintf(stderr, ">>>An unknown operation was encountered: %d\n", *(cpu->cmdArr + ip));
-                abort();
+                return 1;
         }
 
         ++ip;
@@ -135,7 +137,7 @@ arg_t GetPushArg(int command, size_t* ip, Cpu_t* cpu)
 
     arg_t  arg    = 0;
     arg_t  value  = 0;
-    int    curReg = 0; 
+    arg_t  curReg = 0; 
     short  ipCtrl = 0;
 
     if (command & ARG_IMMED)
@@ -148,17 +150,17 @@ arg_t GetPushArg(int command, size_t* ip, Cpu_t* cpu)
 
     if (command & ARG_REG)
     {
-       memcpy(&curReg, cpu->cmdArr + *ip, sizeof(int));
+       memcpy(&curReg, cpu->cmdArr + *ip, sizeof(arg_t));
        arg += cpu->regs[curReg];
        
-       *ip += sizeof(int);
+       *ip += sizeof(arg_t);
     }
 
     if (command & ARG_MEM)
     {
         if (arg > MAX_RAM_SIZE)
         {
-            SYNTAX_ERROR(command);
+            return POISON_ARG;
         }
 
         else
@@ -167,8 +169,7 @@ arg_t GetPushArg(int command, size_t* ip, Cpu_t* cpu)
     
     if ((command & (ARG_IMMED | ARG_REG | ARG_MEM)) == 0)
     {
-        printf("hehe...\n");
-        SYNTAX_ERROR(command);
+        return POISON_ARG;
     }
 
     *ip -= 1;
@@ -183,7 +184,7 @@ arg_t* GetPopArg(int command, size_t* ip, Cpu_t* cpu)
 
     size_t arg    = 0; 
     arg_t  value  = 0;
-    int    curReg = 0; 
+    arg_t  curReg = 0; 
 
     
     if (command & ARG_MEM)
@@ -198,15 +199,15 @@ arg_t* GetPopArg(int command, size_t* ip, Cpu_t* cpu)
 
         if (command & ARG_REG)
         {
-            memcpy(&curReg, cpu->cmdArr + *ip, sizeof(int));
-            *ip += sizeof(int);
+            memcpy(&curReg, cpu->cmdArr + *ip, sizeof(arg_t));
+            *ip += sizeof(arg_t);
 
             arg += cpu->regs[curReg];
         }
 
         if (arg >= MAX_RAM_SIZE)
         {
-            SYNTAX_ERROR(command);
+            return NULL;
         }
         else
         {
@@ -219,37 +220,37 @@ arg_t* GetPopArg(int command, size_t* ip, Cpu_t* cpu)
     
     else if (command & ARG_REG) 
     {
-        memcpy(&curReg, cpu->cmdArr + *ip, sizeof(int));
-        *ip += sizeof(int) - 1;
+        memcpy(&curReg, cpu->cmdArr + *ip, sizeof(arg_t));
+        *ip += sizeof(arg_t) - 1;
 
         return cpu->regs + curReg;
-
     }
 
     else
     {
-        SYNTAX_ERROR(command);
+        return NULL;
     }
 
     return NULL;
 }
 
-void GetJumpArg(size_t* ip, Cpu_t* cpu)
+int GetJumpArg(size_t* ip, Cpu_t* cpu)
 {
     ASSERT(ip  != NULL);
     ASSERT(cpu != NULL);
     
     size_t arg = 0;
     
-    memcpy(&arg, cpu->cmdArr + *ip, sizeof(int));
+    memcpy(&arg, cpu->cmdArr + *ip, sizeof(arg_t));
     
     if (arg < 0)
     {
-        fprintf(stderr, "Bad jumping on %d...\n", arg);
-        abort();
+        return 1;
     }
 
     *ip = arg - 1;
+
+    return 0;
 }
 
 void CpuDump(Cpu_t* cpu, size_t ip)
@@ -272,7 +273,7 @@ void CpuDump(Cpu_t* cpu, size_t ip)
         }
 
 
-        if (*(cpu->cmdArr + index) == 6)
+        if (*(cpu->cmdArr + index) == CMD_HLT) 
             break;
 
         if (index != 0 && index % 9 == 0)
@@ -291,27 +292,19 @@ void CpuDump(Cpu_t* cpu, size_t ip)
         printf("R%cX %6d\n", 'A' + index - 1, cpu->regs[index]);
     }
 
+    printf("--------------------Function call stack--------------------\n");
+    StackDump(&cpu->retStk);
+
     printf("                            RAM:\n");
 
     for (size_t index = 0; index < MAX_RAM_SIZE; ++index)
     {
         printf("%3d ", cpu->RAM[index]);
 
-        if ((index + 1) % 20 == 0)
+        if ((index + 1) % 10 == 0)
             printf("\n");
     }
 
     printf("--------------------------------------------------------------------------------\n");
 }
-
-
-
-
-
-
-
-
-
-
-
 

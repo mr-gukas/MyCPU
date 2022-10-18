@@ -1,5 +1,5 @@
 #include "cpu.h"
 
-char* ReadBin(char* cmdArr, FILE* binary);
-void RunDisasm(char* cmdArr, FILE* rezult);
-void DisasmArg(int curCmd, char* cmdArr, size_t* ip, FILE* rezult);
+unsigned char* ReadBin(unsigned char* cmdArr, size_t* size, FILE* binary);
+void RunDisasm(unsigned char* cmdArr, size_t* size, FILE* rezult);
+void DisasmArg(int curCmd, unsigned char* cmdArr, size_t* ip, FILE* rezult);
