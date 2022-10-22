@@ -385,11 +385,15 @@ int LabelAnalyze(char* cmd, AsmCmd_t* asmCmd, size_t ip)
             return 1;
         }
     }
-    else if (sscanf(cmd, "%9s", curTextLabel) == 1) 
+    else if (sscanf(cmd, "%19s", curTextLabel) == 1) 
     {
         int labelCtrl = 1;
+        
         for (size_t num = 0; num < MAX_LABEL_COUNT; ++num)
         {
+            char* dbDot = strchr(curTextLabel, ':');
+            if (dbDot) *dbDot = '\0';
+
             if (strcmp(asmCmd->labels[num].name, POISON_NAME) == 0)
             {
                 strncpy(asmCmd->labels[num].name, curTextLabel, LABEL_SIZE);
@@ -400,14 +404,14 @@ int LabelAnalyze(char* cmd, AsmCmd_t* asmCmd, size_t ip)
                 break;
             }
 
-            else if (asmCmd->labels[num].adress != POISON_ARG)
+            else if (strcmp(asmCmd->labels[num].name, curTextLabel) == 0)
             {
                 labelCtrl = 0;
                 break;
             }
 
         }
-
+        
         return labelCtrl;
     }
     

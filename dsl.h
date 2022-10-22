@@ -22,12 +22,13 @@
 
 #define SHOW_RAM                                      \
     system("clear");                                   \
-    printf("-----------------\n");                      \
+    printf("- - - - - - - - - - - - - - - - - \n");     \
     for (size_t index = 0; index < MAX_RAM_SIZE; ++index)\
     {                                                     \
         if (index % 15 == 0) printf("|");                  \
-        printf((cpu->RAM[index]) ? "*" : " ");              \
+        printf((cpu->RAM[index]) ? "* " : "  ");            \
         if ((index + 1) % 15 == 0)                           \
         printf("|\n");                                        \
     }                                                          \
-    printf("-----------------\n");                              \
+    printf("- - - - - - - - - - - - - - - - - \n");             \
+

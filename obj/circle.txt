@@ -7,20 +7,21 @@ PUSH 0
 POP RBX
 PUSH 15
 POP RCX
-7:
+
+newDot:
 PUSH RAX
 PUSH RBX
-JE :8
-CALL :1
+JE :end
+CALL :isInCirc
 PUSH RBX
 PUSH 1
 ADD
 POP RBX
-JMP :7
-8:
+JMP :newDot
+end:
 HLT
 
-1:
+isInCirc:
 PUSH RBX
 PUSH RCX
 DIV
@@ -52,9 +53,9 @@ ADD
 PUSH RIX 
 PUSH RIX 
 MUL
-JA :2
+JA :nCirc
 PUSH 1
 POP [RBX]
-2:
+nCirc:
 RET
 

@@ -1,22 +1,22 @@
 INP
 POP RBX
-CALL :1
+CALL :fuck
 OUT
 HLT
 
-1:
+fuck:
 PUSH RBX
 PUSH RBX
 PUSH 1
-JBE :2
+JBE :first
 PUSH RBX
 PUSH 1
 SUB
 POP RBX
-CALL :1
+CALL :fuck
 MUL
 RET
 
-2:
+first:
 RET
 

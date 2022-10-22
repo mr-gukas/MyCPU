@@ -3,47 +3,125 @@
 ---------------------COMMAND LIST---------------------
 
 0000  |  INP              |  07 
-0001  |  POP RBX          |  49 02
-0006  |  CALL :1          |  11 2A3A3533 
-000B  |  OUT              |  06 
-000C  |  HLT              |  00 
-000D  |                   |  
-000D  |  1:               |  
-000D  |  PUSH RBX         |  41 02
-0012  |  PUSH RBX         |  41 02
-0017  |  PUSH 1           |  21 01 
-001C  |  JBE :2           |  0E 2A3A3533 
-0021  |  PUSH RBX         |  41 02
-0026  |  PUSH 1           |  21 01 
-002B  |  SUB              |  03 
-002C  |  POP RBX          |  49 02
-0031  |  CALL :1          |  11 0D 
-0036  |  MUL              |  04 
-0037  |  RET              |  17 
-0038  |                   |  
-0038  |  2:               |  
-0038  |  RET              |  17 
+0001  |  POP RIX          |  49 09
+0006  |                   |  
+0006  |  PUSH 225         |  21 E1 
+000B  |  POP RAX          |  49 01
+0010  |  PUSH 0           |  21 00 
+0015  |  POP RBX          |  49 02
+001A  |  PUSH 15          |  21 0F 
+001F  |  POP RCX          |  49 03
+0024  |                   |  
+0024  |  newDot:          |  
+0024  |  PUSH RAX         |  41 01
+0029  |  PUSH RBX         |  41 02
+002E  |  JE :end          |  0D 24 
+0033  |  CALL :isInCirc   |  11 24 
+0038  |  PUSH RBX         |  41 02
+003D  |  PUSH 1           |  21 01 
+0042  |  ADD              |  02 
+0043  |  POP RBX          |  49 02
+0048  |  JMP :newDot      |  0A 24 
+004D  |  end:             |  
+004D  |  HLT              |  00 
+004E  |                   |  
+004E  |  isInCirc:        |  
+004E  |  PUSH RBX         |  41 02
+0053  |  PUSH RCX         |  41 03
+0058  |  DIV              |  05 
+0059  |  POP RDX          |  49 04
+005E  |  PUSH RBX         |  41 02
+0063  |  PUSH RCX         |  41 03
+0068  |  PUSH RDX         |  41 04
+006D  |  MUL              |  04 
+006E  |  SUB              |  03 
+006F  |  POP REX          |  49 05
+0074  |                   |  
+0074  |  PUSH RDX         |  41 04
+0079  |  PUSH 7           |  21 07 
+007E  |  SUB              |  03 
+007F  |  PUSH RDX         |  41 04
+0084  |  PUSH 7           |  21 07 
+0089  |  SUB              |  03 
+008A  |  MUL              |  04 
+008B  |                   |  
+008B  |  PUSH REX         |  41 05
+0090  |  PUSH 7           |  21 07 
+0095  |  SUB              |  03 
+0096  |  PUSH REX         |  41 05
+009B  |  PUSH 7           |  21 07 
+00A0  |  SUB              |  03 
+00A1  |  MUL              |  04 
+00A2  |                   |  
+00A2  |  ADD              |  02 
+00A3  |  PUSH RIX         |  41 09
+00A8  |  PUSH RIX         |  41 09
+00AD  |  MUL              |  04 
+00AE  |  JA :nCirc        |  0B 24 
+00B3  |  PUSH 1           |  21 01 
+00B8  |  POP [RBX]        |  C9 02 
+00BD  |  nCirc:           |  
+00BD  |  RET              |  17 
 
 ---------------------COMMAND LIST---------------------
 
 0000  |  INP              |  07 
-0001  |  POP RBX          |  49 02
-0006  |  CALL :1          |  11 0D 
-000B  |  OUT              |  06 
-000C  |  HLT              |  00 
-000D  |                   |  
-000D  |  1:               |  
-000D  |  PUSH RBX         |  41 02
-0012  |  PUSH RBX         |  41 02
-0017  |  PUSH 1           |  21 01 
-001C  |  JBE :2           |  0E 38 
-0021  |  PUSH RBX         |  41 02
-0026  |  PUSH 1           |  21 01 
-002B  |  SUB              |  03 
-002C  |  POP RBX          |  49 02
-0031  |  CALL :1          |  11 0D 
-0036  |  MUL              |  04 
-0037  |  RET              |  17 
-0038  |                   |  
-0038  |  2:               |  
-0038  |  RET              |  17 
+0001  |  POP RIX          |  49 09
+0006  |                   |  
+0006  |  PUSH 225         |  21 E1 
+000B  |  POP RAX          |  49 01
+0010  |  PUSH 0           |  21 00 
+0015  |  POP RBX          |  49 02
+001A  |  PUSH 15          |  21 0F 
+001F  |  POP RCX          |  49 03
+0024  |                   |  
+0024  |  newDot:          |  
+0024  |  PUSH RAX         |  41 01
+0029  |  PUSH RBX         |  41 02
+002E  |  JE :end          |  0D 4D 
+0033  |  CALL :isInCirc   |  11 4E 
+0038  |  PUSH RBX         |  41 02
+003D  |  PUSH 1           |  21 01 
+0042  |  ADD              |  02 
+0043  |  POP RBX          |  49 02
+0048  |  JMP :newDot      |  0A 24 
+004D  |  end:             |  
+004D  |  HLT              |  00 
+004E  |                   |  
+004E  |  isInCirc:        |  
+004E  |  PUSH RBX         |  41 02
+0053  |  PUSH RCX         |  41 03
+0058  |  DIV              |  05 
+0059  |  POP RDX          |  49 04
+005E  |  PUSH RBX         |  41 02
+0063  |  PUSH RCX         |  41 03
+0068  |  PUSH RDX         |  41 04
+006D  |  MUL              |  04 
+006E  |  SUB              |  03 
+006F  |  POP REX          |  49 05
+0074  |                   |  
+0074  |  PUSH RDX         |  41 04
+0079  |  PUSH 7           |  21 07 
+007E  |  SUB              |  03 
+007F  |  PUSH RDX         |  41 04
+0084  |  PUSH 7           |  21 07 
+0089  |  SUB              |  03 
+008A  |  MUL              |  04 
+008B  |                   |  
+008B  |  PUSH REX         |  41 05
+0090  |  PUSH 7           |  21 07 
+0095  |  SUB              |  03 
+0096  |  PUSH REX         |  41 05
+009B  |  PUSH 7           |  21 07 
+00A0  |  SUB              |  03 
+00A1  |  MUL              |  04 
+00A2  |                   |  
+00A2  |  ADD              |  02 
+00A3  |  PUSH RIX         |  41 09
+00A8  |  PUSH RIX         |  41 09
+00AD  |  MUL              |  04 
+00AE  |  JA :nCirc        |  0B BD 
+00B3  |  PUSH 1           |  21 01 
+00B8  |  POP [RBX]        |  C9 02 
+00BD  |  nCirc:           |  
+00BD  |  RET              |  17 

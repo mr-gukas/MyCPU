@@ -211,7 +211,7 @@ arg_t* GetPopArg(int command, size_t* ip, Cpu_t* cpu)
         }
         else
         {
-            sleep(1);
+            sleep(0.2);
             *ip -= 1;
 
             return &cpu->RAM[arg];
